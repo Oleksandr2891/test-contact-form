@@ -7,16 +7,19 @@ import {
   deleteContact,
 } from "../../redux/contacts/contacts-operation";
 import { getVisibleContacts } from "../../redux/selector";
+import { authTokenSelector } from "../../redux/auth/auth-selectors";
 
-const ContactList = () => {
+const ContactList = ({ onUpdateContact }) => {
   const dispatch = useDispatch();
   const contacts = useSelector(getVisibleContacts);
+  const authToken = useSelector(authTokenSelector);
 
-  const onDeleteContact = (id) => dispatch(deleteContact(id));
+  const onDeleteContact = (id) => dispatch(deleteContact(id, authToken));
+  const getById = (id) => onUpdateContact(id);
 
   useEffect(() => {
-    dispatch(getContacts());
-  }, [dispatch]);
+    if (authToken) dispatch(getContacts(authToken));
+  }, [dispatch, authToken]);
 
   return (
     <ContactWrapper>
@@ -27,6 +30,7 @@ const ContactList = () => {
           number={number}
           id={id}
           onDeleteContact={onDeleteContact}
+          onUpdateContact={getById}
         />
       ))}
     </ContactWrapper>

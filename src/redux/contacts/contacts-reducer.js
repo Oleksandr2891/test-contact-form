@@ -1,4 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { signOut } from "../auth/auth-actions";
 import {
   addAsyncContactSuccess,
   getAsyncContactsSuccess,
@@ -12,6 +13,7 @@ const item = createReducer([], {
   },
   [deleteAsyncContactSuccess]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
+  [signOut]: () => [],
 });
 
 export default item;
